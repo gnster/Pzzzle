@@ -3,6 +3,7 @@
 import Image
 from StringIO import StringIO
 import os
+import logging
 
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, Http404
@@ -41,6 +42,9 @@ def upload(request):
     if request.FILES:
         thumb = resize(StringIO(request.FILES['pic'].read()))
         thumb.save(os.path.join(settings.THUMBNAIL_PATH, '%s_%s.jpg' % (x, y)))
+
+        log = get_logger('upload')
+        log.info('%s (%s, %s)', request.META['REMOTE_ADDR'], x, y)
         return HttpResponseRedirect('/')
 
     else:
@@ -57,3 +61,17 @@ def resize(img):
 def make_square(img):
     min_size = min(img.size)
     return img.crop((0, 0, min_size, min_size))
+
+def get_logger(name):
+    filename = os.path.join(settings.LOG_PATH, name.replace('.', '/') + '.log')
+
+    log = logging.getLogger(name)
+    log.setLevel(logging.INFO)
+    handler = logging.handlers.RotatingFileHandler(
+                  filename, maxBytes=10000000, backupCount=10)
+    LOG_FORMAT = u'%(levelname)s %(asctime)s: %(message)s'
+    LOG_TIME_FORMAT = u'%Y-%m-%d %H:%M:%S'
+    handler.setFormatter(logging.Formatter(LOG_FORMAT, LOG_TIME_FORMAT))
+    log.addHandler(handler)
+
+    return log
