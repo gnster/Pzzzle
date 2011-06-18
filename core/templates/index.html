@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table cellpadding="0" cellspacing="0">
+        {% for line in cells %}
+            <tr>
+                {% for i in line %}
+                    <td><a href="/upload?x={{ i.x }}&y={{ i.y }}"><img src="{{ i.url }}"/></a></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

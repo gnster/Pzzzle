@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+
+<head>
+    <title>{% block title %}Паззл{% endblock %}</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
+
+    <script type="text/javascript">
+        MEDIA_URL = '{{ MEDIA_URL }}';
+    </script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}core.js?1"></script>
+
+    {% block head %}{% endblock %}
+
+</head>
+<body>
+    <h1>Pzzzle.com</h1>
+    <a href="">What to do?</a>
+    <a href="">Screenshots</a>
+    <a href="">About pzzzle</a>
+
+    <br><br>
+
+    {% block content %}{% endblock %}
+
+    <hr>
+    (c) Idea & design by Vitaliy Rynskiy  Programming by Mikhail Polykovskij
+</body>
+</html>

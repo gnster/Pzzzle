@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <input type="hidden" name="x" value="{{ x }}" />
+        <input type="hidden" name="y" value="{{ y }}" />
+        <input type="file" name="pic" />
+
+        <input type="submit" value="Сохранить">
+    </form>
+{% endblock %}
