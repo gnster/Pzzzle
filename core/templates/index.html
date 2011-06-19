@@ -6,12 +6,17 @@
             <tr>
                 {% for i in line %}
                     <td>{% if i.lock %}
-                            <img src="{{ i.url }}"/>
+                            <img src="{{ i.url }}" class="image_{{ i.x }}_{{ i.y }}"/>
                         {% else %}
-                            <a href="/upload?x={{ i.x }}&y={{ i.y }}"><img src="{{ i.url }}"/></a></td>
+                            <a href="/upload?x={{ i.x }}&y={{ i.y }}" class="uploader"><img src="{{ i.url }}"  class="image_{{ i.x }}_{{ i.y }}"/></a></td>
                         {%  endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
     </table>
+    
+    <iframe id="_iframe"></iframe>
+    
+    <div id="uploader" class="hidden"></div>
+    
 {% endblock %}

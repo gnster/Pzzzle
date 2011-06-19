@@ -7,10 +7,14 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    
     <script type="text/javascript">
         MEDIA_URL = '{{ MEDIA_URL }}';
     </script>
-    <script type="text/javascript" src="{{ MEDIA_URL }}core.js?1"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}core.js?2"></script>
+
+    <style type="text/css" media="screen" src="{{ MEDIA_URL }}style.css"/>
 
     {% block head %}{% endblock %}
 
