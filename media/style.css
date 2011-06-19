@@ -1,3 +1,31 @@
-#_iframe {position:absolute; left:-100px;top:-100px;width:1px;height:1px;}
-#uploader {width:200px;height:300px;position:absolute;left:50%;top:50%;margin-left:-100px;margin-top:-150px;background:#fff;}
-.hidden {display:none;}
+#_iframe
+{
+    position: absolute;
+    left: -100px;
+    top: -100px;
+    width: 1px;
+    height: 1px;
+}
+
+#uploader
+{
+    width: 200px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -100px;
+    margin-top: -150px;
+    background: #fff;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.mozaic td
+{
+    width: 100px;
+    height: 100px;
+}
