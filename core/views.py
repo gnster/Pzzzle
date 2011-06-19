@@ -37,7 +37,7 @@ def index(request):
 def upload(request):
     if request.FILES:
         x, y = get_point(request.POST)
-        if not not Cell.is_locked(x, y):
+        if not Cell.is_locked(x, y):
             thumb = resize(StringIO(request.FILES['pic'].read()))
             thumb.save(os.path.join(settings.THUMBNAIL_PATH, '%s_%s.jpg' % (x, y)))
 
