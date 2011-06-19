@@ -2,6 +2,7 @@
 # Django settings for pzzzle project.
 
 import os
+from datetime import timedelta
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -107,6 +108,7 @@ FORCE_SCRIPT_NAME = ""
 TABLE = (30, 5)
 THUMBNAIL_SIZE = (100, 100)
 THUMBNAIL_PATH = os.path.join(MEDIA_ROOT, 'data')
+LOCK_PERIOD = timedelta(minutes=10)
 
 LOG_PATH = '/var/log/projects/pzzzle'
 
@@ -117,6 +119,8 @@ LOGGING_FORMAT = '%(asctime)s %(name)-15s %(levelname)s %(message)s'
 LOGGING_MAX_FILE_SIZE = 1 * 1024 * 1024 #: Максимальный размер файла с логами в байтах.
 LOGGING_MAX_FILES_COUNT = 10 #: Количество бекапов файлов с логами.
 
+CACHE_ROOT = 'pzzzle/'
+CACHE_BACKEND = 'locmem:///'
 
 try:
     from local_settings import *

@@ -2,6 +2,8 @@
 
 from datetime import datetime, timedelta
 from django.db import models
+from django.conf import settings
+from django.core.cache import cache
 
 
 class Cell(models.Model):
@@ -12,13 +14,15 @@ class Cell(models.Model):
 
     @classmethod
     def get_locks(cls):
-        return dict(((cell.x, cell.y), cell.lock_dt + timedelta(hours=1)) for cell in Cell.objects.all() if cell.lock_dt >= datetime.now() - timedelta(hours=1))
+        return dict(((cell.x, cell.y), cell.lock_dt + settings.LOCK_PERIOD)
+                    for cell in Cell.objects.all() if cell.lock_dt >= datetime.now() - settings.LOCK_PERIOD
+        )
 
     @classmethod
     def is_locked(cls, x, y):
         try:
             cell = Cell.objects.get(x=x, y=y)
-            return cell.lock_dt >= datetime.now() - timedelta(hours=1)
+            return cell.lock_dt >= datetime.now() - settings.LOCK_PERIOD
         except Cell.DoesNotExist:
             return False
 
@@ -45,15 +49,20 @@ class Lock(models.Model):
 
     @classmethod
     def can_lock(cls, x, y, ip):
+        check = cache.get('lock/%s' % ip)
+        if check:
+            return False
+
         try:
             lock = Lock.objects.get(x=x, y=y, ip=ip)
-            return lock.lock_dt >= datetime.now() - timedelta(hours=1)
+            return lock.lock_dt >= datetime.now() - settings.LOCK_PERIOD
         except Lock.DoesNotExist:
             return True
 
     @classmethod
     def add(cls, x, y, ip):
         cls.objects.create(x=x, y=y, ip=ip, lock_dt=datetime.now())
+        cache.set('lock/%s' % ip, True, 10)
 
     class Meta:
         verbose_name = u"Блокировка"
