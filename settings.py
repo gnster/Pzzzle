@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# # Django settings for pzzzle project.
+# Django settings for pzzzle project.
 
 import os
 

@@ -5,7 +5,11 @@
         {% for line in cells %}
             <tr>
                 {% for i in line %}
-                    <td><a href="/upload?x={{ i.x }}&y={{ i.y }}"><img src="{{ i.url }}"/></a></td>
+                    <td>{% if i.lock %}
+                            <img src="{{ i.url }}"/>
+                        {% else %}
+                            <a href="/upload?x={{ i.x }}&y={{ i.y }}"><img src="{{ i.url }}"/></a></td>
+                        {%  endif %}
                 {% endfor %}
             </tr>
         {% endfor %}

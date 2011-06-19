@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="" method="post" enctype="multipart/form-data" >
+    <form action="/upload" method="post" enctype="multipart/form-data" >
         {% csrf_token %}
         <input type="hidden" name="x" value="{{ x }}" />
         <input type="hidden" name="y" value="{{ y }}" />
         <input type="file" name="pic" />
 
         <input type="submit" value="Сохранить">
+    </form>
+
+    <br><br>
+    <form action="/lock" method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <input type="hidden" name="x" value="{{ x }}" />
+        <input type="hidden" name="y" value="{{ y }}" />
+        <input type="submit" value="Заблокировать">
     </form>
 {% endblock %}

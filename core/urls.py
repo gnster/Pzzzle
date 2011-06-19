@@ -5,5 +5,6 @@ from core.views import *
 
 urlpatterns = patterns('',
     url(r'^$', index),
-    url(r'^upload', upload)
+    url(r'^upload', upload),
+    url(r'^lock', lock),
 )
