@@ -43,7 +43,7 @@ def upload(request):
 
             log = get_logger('upload')
             log.info('%s (%s, %s)', request.META['REMOTE_ADDR'], x, y)
-        return HttpResponseRedirect('/')
+        return render_to_response(request, 'upload_complete.html', {'x': x, 'y': y, 'thumb': thumb})
 
     else:
         x, y = get_point(request.GET)

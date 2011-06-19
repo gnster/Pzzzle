@@ -1,20 +1,16 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <form action="/upload" method="post" enctype="multipart/form-data" >
+    <form action="/upload" method="post" enctype="multipart/form-data" target="_iframe">
         {% csrf_token %}
         <input type="hidden" name="x" value="{{ x }}" />
         <input type="hidden" name="y" value="{{ y }}" />
         <input type="file" name="pic" />
 
-        <input type="submit" value="Сохранить">
+        <input type="submit" class="submit" value="Сохранить">
     </form>
 
     <br><br>
-    <form action="/lock" method="post" enctype="multipart/form-data" >
+    <form action="/lock" method="post" enctype="multipart/form-data" target="_iframe"> <!-- AJAX needed-->
         {% csrf_token %}
         <input type="hidden" name="x" value="{{ x }}" />
         <input type="hidden" name="y" value="{{ y }}" />
-        <input type="submit" value="Заблокировать">
+        <input type="submit" class="submit" value="Заблокировать">
     </form>
-{% endblock %}
