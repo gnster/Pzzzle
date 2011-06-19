@@ -12,7 +12,7 @@ class Cell(models.Model):
 
     @classmethod
     def get_locks(cls):
-        return dict(((cell.x, cell.y), True) for cell in Cell.objects.all() if cell.lock_dt >= datetime.now() - timedelta(hours=1))
+        return dict(((cell.x, cell.y), cell.lock_dt + timedelta(hours=1)) for cell in Cell.objects.all() if cell.lock_dt >= datetime.now() - timedelta(hours=1))
 
     @classmethod
     def is_locked(cls, x, y):

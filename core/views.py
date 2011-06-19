@@ -37,12 +37,12 @@ def index(request):
 def upload(request):
     if request.FILES:
         x, y = get_point(request.POST)
+        if not not Cell.is_locked(x, y):
+            thumb = resize(StringIO(request.FILES['pic'].read()))
+            thumb.save(os.path.join(settings.THUMBNAIL_PATH, '%s_%s.jpg' % (x, y)))
 
-        thumb = resize(StringIO(request.FILES['pic'].read()))
-        thumb.save(os.path.join(settings.THUMBNAIL_PATH, '%s_%s.jpg' % (x, y)))
-
-        log = get_logger('upload')
-        log.info('%s (%s, %s)', request.META['REMOTE_ADDR'], x, y)
+            log = get_logger('upload')
+            log.info('%s (%s, %s)', request.META['REMOTE_ADDR'], x, y)
         return HttpResponseRedirect('/')
 
     else:
@@ -65,7 +65,6 @@ def make_square(img):
 
 def lock(request):
     x, y = get_point(request.POST)
-    print x, y
     ip = request.META['REMOTE_ADDR']
     if not Cell.is_locked(x, y) and Lock.can_lock(x, y, ip):
         Cell.lock(x, y, ip)
