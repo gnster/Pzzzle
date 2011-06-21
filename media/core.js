@@ -8,6 +8,7 @@ $(document).ready(function() {
         //Disable layer. Maybe send via ajax?
       });
     });
+    return false;
   });
 });
 
