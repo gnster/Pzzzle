@@ -1,20 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table cellpadding="0" cellspacing="0" class="mozaic">
-        {% for line in cells %}
-            <tr>
-                {% for i in line %}
-                    <td>{% if i.lock %}
-                            <img src="{{ i.url }}" class="image_{{ i.x }}_{{ i.y }}"/>
-                        {% else %}
-                            <a href="/upload?x={{ i.x }}&y={{ i.y }}" class="uploader"><img src="{{ i.url }}"  class="image_{{ i.x }}_{{ i.y }}"/></a></td>
-                        {%  endif %}
+    {% spaceless %}
+        <div id="imagery-outer">
+            <div id="imagery-inner">
+                {% for cell in cells %}
+                    <div class="cell">
+                        <img class="cell_img" src="{{ cell.url }}" width="100px" height="100px">
+                        <div class="control" id="control_{{ cell.x }}_{{ cell.y }}">
+                            {% if cell.lock %}
+                                {{ cell.lock }} min
+                                <img src="/media/i/protected.png" alt="Залочено">
+                            {% else %}
+                                <a href="#" onclick="window.location='/upload?x={{ cell.x }}&y={{ cell.y }}';">upl</a> &nbsp;
+                                <a href="#" class="icon-link js-lock" id="lock_{{ cell.x }}_{{ cell.y }}" 
+                                    onclick="lock({{ cell.x }}, {{ cell.y }});">
+                                    <img src="/media/i/for-protection.png" alt="Залочить">
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
-
+            </div>
+        </div>
+    {% endspaceless %}
+ 
     <iframe id="_iframe"></iframe>
 
     <div id="uploader" class="hidden"></div>

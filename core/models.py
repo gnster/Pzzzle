@@ -14,15 +14,16 @@ class Cell(models.Model):
 
     @classmethod
     def get_locks(cls):
-        return dict(((cell.x, cell.y), cell.lock_dt + settings.LOCK_PERIOD)
-                    for cell in Cell.objects.all() if cell.lock_dt >= datetime.now() - settings.LOCK_PERIOD
+        now = datetime.now()
+        return dict(((cell.x, cell.y), (cell.lock_dt - now + settings.CELL_LOCK_PERIOD).seconds/60)
+                    for cell in Cell.objects.all() if cell.lock_dt >= now - settings.CELL_LOCK_PERIOD
         )
 
     @classmethod
     def is_locked(cls, x, y):
         try:
             cell = Cell.objects.get(x=x, y=y)
-            return cell.lock_dt >= datetime.now() - settings.LOCK_PERIOD
+            return cell.lock_dt >= datetime.now() - settings.CELL_LOCK_PERIOD
         except Cell.DoesNotExist:
             return False
 
@@ -51,13 +52,17 @@ class Lock(models.Model):
     def can_lock(cls, x, y, ip):
         check = cache.get('lock/%s' % ip)
         if check:
-            return False
+            return False, u"Блокировка не чаще раза в 10 секунд"
 
         try:
             lock = Lock.objects.get(x=x, y=y, ip=ip)
-            return lock.lock_dt >= datetime.now() - settings.LOCK_PERIOD
+            if lock.lock_dt < datetime.now() - settings.IP_LOCK_PERIOD:
+                return True, u"Можно)"
+            else:
+                print lock, lock.x, lock.y, lock.ip
+                return False, u"Вы сегодня уже блокировали эту картинку"
         except Lock.DoesNotExist:
-            return True
+            return True, u"Можно"
 
     @classmethod
     def add(cls, x, y, ip):

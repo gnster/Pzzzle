@@ -6,7 +6,7 @@ import os
 import logging
 
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext, Context, loader
 from django.forms import *
 
@@ -25,11 +25,11 @@ def render_to_response(request, template_name, context_dict={}, cookies={}):
 def index(request):
     locks = Cell.get_locks()
     context = {
-        'cells': [ [{'x': x+1,
-                     'y': y+1,
-                     'url': settings.MEDIA_URL + 'data/%s_%s.jpg' % (x+1, y+1),
-                     'lock': (x+1, y+1) in locks,
-        } for x in xrange(settings.TABLE[0])] for y in xrange(settings.TABLE[1])]
+        'cells': [ {'x': x+1,
+                    'y': y+1,
+                    'url': settings.MEDIA_URL + 'data/%s_%s.jpg' % (x+1, y+1),
+                    'lock': locks.get((x+1, y+1), False),
+        } for y in xrange(settings.TABLE[1]) for x in xrange(settings.TABLE[0]) ]
     }
     return render_to_response(request, 'index.html', context)
 
@@ -43,7 +43,8 @@ def upload(request):
 
             log = get_logger('upload')
             log.info('%s (%s, %s)', request.META['REMOTE_ADDR'], x, y)
-        return render_to_response(request, 'upload_complete.html', {'x': x, 'y': y, 'thumb': thumb})
+        #return render_to_response(request, 'upload_complete.html', {'x': x, 'y': y, 'thumb': thumb})
+        return HttpResponseRedirect('/')
 
     else:
         x, y = get_point(request.GET)
@@ -64,13 +65,20 @@ def make_square(img):
 
 
 def lock(request):
-    x, y = get_point(request.POST)
+    x, y = get_point(request.GET)
     ip = request.META['REMOTE_ADDR']
-    if not Cell.is_locked(x, y) and Lock.can_lock(x, y, ip):
-        Cell.lock(x, y, ip)
-        Lock.add(x, y, ip)
-
-    return HttpResponseRedirect('/')
+    if not Cell.is_locked(x, y):
+        lock_res = Lock.can_lock(x, y, ip)
+        if lock_res[0]:
+            Cell.lock(x, y, ip)
+            Lock.add(x, y, ip)
+    
+            return HttpResponse('success')
+        else:
+            return HttpResponse(lock_res[1]) # Error message
+    
+    else:
+        return HttpResponse(u'Картинка заблокирована')
 
 
 def get_logger(name):

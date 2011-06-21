@@ -1,5 +1,9 @@
-#_iframe
-{
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#_iframe {
     position: absolute;
     left: -100px;
     top: -100px;
@@ -7,8 +11,7 @@
     height: 1px;
 }
 
-#uploader
-{
+#uploader {
     width: 200px;
     height: 300px;
     position: absolute;
@@ -19,13 +22,66 @@
     background: #fff;
 }
 
-.hidden
-{
+.hidden {
     display: none;
 }
 
-.mozaic td
-{
+.mozaic td {
     width: 100px;
     height: 100px;
+}
+
+#infrawr {
+    width: 100%;
+    background-color: #fff;
+}
+
+#usus {
+    position: relative;
+    min-width: 998px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+#imagery-outer {
+    overflow-x: hidden;
+    clear: both;
+    min-width: 998px;
+    max-width: 1600px;
+}
+
+#imagery-inner {
+    width: 3000px;
+    padding: 18px 0 25px;
+    height: 500px;
+}
+
+h1 {
+    float: left;
+}
+
+div.cell {
+    z-index: 1;    
+    display: inline-block;
+    background: url('/media/i/crossed.gif') center center no-repeat;
+    position: relative;
+}
+
+div.cell_show {
+    display: inline-block;
+    position: relative;
+    z-index: 3;
+    border: 1px solid black;
+    padding: 7px;
+    margin: -8px -8px -40px -8px;
+    background-color: white;
+    vertical-align: top;
+}
+
+.cell .control {
+    display: none;    
+}
+
+.cell_show .control {
+    display: block; 
 }

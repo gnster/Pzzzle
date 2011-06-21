@@ -108,7 +108,8 @@ FORCE_SCRIPT_NAME = ""
 TABLE = (30, 5)
 THUMBNAIL_SIZE = (100, 100)
 THUMBNAIL_PATH = os.path.join(MEDIA_ROOT, 'data')
-LOCK_PERIOD = timedelta(minutes=10)
+CELL_LOCK_PERIOD = timedelta(minutes=10)
+IP_LOCK_PERIOD = timedelta(days=1)
 
 LOG_PATH = '/var/log/projects/pzzzle'
 
